@@ -11,8 +11,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.khavronsky.exerciseprototype.exercise_models.ExerciseModel.ExerciseType.CARDIO;
 import static com.khavronsky.exerciseprototype.exercise_models.ExerciseModel.ExerciseType.POWER;
@@ -22,6 +25,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @BindView(R.id.my_view)
     CustomCollapsingView mCustomCollapsingView;
+
+    @BindView(R.id.ex_performance_add_btn)
+    View addExButton;
 
     ModelOfExercisePerformance mModelOfExercisePerformance;
 
@@ -47,6 +53,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startFragment();
     }
 
+    @OnClick(R.id.ex_performance_add_btn)
+    void addExercise(){
+        mPresenter.setData(mModelOfExercisePerformance);
+    }
+
     private void startFragment() {
         String tag = mModelOfExercisePerformance
                 .getExercise()
@@ -55,9 +66,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Fragment fragment;
         if (getSupportFragmentManager().findFragmentByTag(tag) != null) {
             fragment = getSupportFragmentManager().findFragmentByTag(tag);
-        } else if (tag == CARDIO.getTag()){
-//            fragment =;
-        } else if (tag == POWER.getTag()){
+        } else if (Objects.equals(tag, CARDIO.getTag())){
+//            fragment = ;
+        } else if (Objects.equals(tag, POWER.getTag())){
 //            fragment =;
         }
     }

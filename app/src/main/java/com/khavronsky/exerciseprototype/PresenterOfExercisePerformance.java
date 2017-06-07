@@ -6,9 +6,17 @@ import com.khavronsky.exerciseprototype.exercise_models.PowerExerciseModel;
 
 public class PresenterOfExercisePerformance extends AbstractPresenter<PresenterOfExercisePerformance.IView> {
 
+    private ModelOfExercisePerformance modelOfExercisePerformance;
+
     void loadData() {
         if (getView() != null) {
-            getView().show(createFakeData());
+            ModelOfExercisePerformance model;
+            if (modelOfExercisePerformance != null) {
+                model = modelOfExercisePerformance;
+            } else {
+                model = createFakeData();
+            }
+            getView().show(model);
         }
     }
 
@@ -25,7 +33,14 @@ public class PresenterOfExercisePerformance extends AbstractPresenter<PresenterO
                 .setNote("Заметка о самочуствии во время осуществления мадагаскарского жима");
     }
 
+    public void setData(ModelOfExercisePerformance modelOfExercisePerformance) {
+        this.modelOfExercisePerformance = modelOfExercisePerformance;
+        //куда-то сохраняем
+
+    }
+
     interface IView {
+
         void show(ModelOfExercisePerformance modelOfExercisePerformance);
     }
 }

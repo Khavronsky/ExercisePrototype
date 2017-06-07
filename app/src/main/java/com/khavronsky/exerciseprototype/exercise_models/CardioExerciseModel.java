@@ -2,9 +2,10 @@ package com.khavronsky.exerciseprototype.exercise_models;
 
 
 import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.IntDef;
 
-public class CardioExerciseModel extends ExerciseModel {
+public class CardioExerciseModel extends ExerciseModel implements Parcelable {
 
     private final static ExerciseType type = ExerciseType.CARDIO;
 
@@ -82,6 +83,8 @@ public class CardioExerciseModel extends ExerciseModel {
      * P A R C E L A B L E   I M P L E M E N T A T I O N
      * */
 
+
+
     public static final Creator<CardioExerciseModel> CREATOR = new Creator<CardioExerciseModel>() {
         @Override
         public CardioExerciseModel createFromParcel(final Parcel source) {
@@ -94,6 +97,14 @@ public class CardioExerciseModel extends ExerciseModel {
         }
     };
 
+    protected CardioExerciseModel(final Parcel in) {
+        super(in);
+        this.high = in.readInt();
+        this.middle = in.readInt();
+        this.low = in.readInt();
+        this.defValue = in.readInt();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -101,6 +112,9 @@ public class CardioExerciseModel extends ExerciseModel {
 
     @Override
     public void writeToParcel(final Parcel dest, final int flags) {
-
+        dest.writeInt(high);
+        dest.writeInt(middle);
+        dest.writeInt(low);
+        dest.writeInt(defValue);
     }
 }
