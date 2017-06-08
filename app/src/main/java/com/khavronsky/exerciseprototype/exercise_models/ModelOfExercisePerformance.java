@@ -6,9 +6,18 @@ import android.os.Parcelable;
 
 public class ModelOfExercisePerformance implements Parcelable{
     private ExerciseModel mExercise;
-    private Long mDate;
+    private Long mStartTime;
     private Long mDuration;
     private String mNote;
+    private int currentKcalPerHour;
+
+    public int getCurrentKcalPerHour() {
+        return currentKcalPerHour;
+    }
+
+    public void setCurrentKcalPerHour(final int currentKcalPerHour) {
+        this.currentKcalPerHour = currentKcalPerHour;
+    }
 
     public ModelOfExercisePerformance(final ExerciseModel exercise) {
         mExercise = exercise;
@@ -18,12 +27,12 @@ public class ModelOfExercisePerformance implements Parcelable{
         return mExercise;
     }
 
-    public Long getDate() {
-        return mDate;
+    public Long getStartTime() {
+        return mStartTime;
     }
 
-    public ModelOfExercisePerformance setDate(final Long date) {
-        mDate = date;
+    public ModelOfExercisePerformance setStartTime(final Long startTime) {
+        mStartTime = startTime;
         return this;
     }
 

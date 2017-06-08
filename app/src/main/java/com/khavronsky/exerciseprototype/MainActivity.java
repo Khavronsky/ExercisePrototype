@@ -2,11 +2,14 @@ package com.khavronsky.exerciseprototype;
 
 import com.khavronsky.exerciseprototype.custom_views.collapsing_card.CustomCollapsingView;
 import com.khavronsky.exerciseprototype.exercise_models.ModelOfExercisePerformance;
+import com.khavronsky.exerciseprototype.fragments.PowerExPerformFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,20 +44,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (mPresenter == null) {
             mPresenter = new PresenterOfExercisePerformance();
         }
-        mPresenter.loadData();
         mPresenter.attachView(this);
-        createMyView();
+        mPresenter.loadData();
+
         setToolbar();
     }
 
     @Override
     public void show(final ModelOfExercisePerformance modelOfExercisePerformance) {
         this.mModelOfExercisePerformance = modelOfExercisePerformance;
+        createMyView();
         startFragment();
+        Log.d("qwert", "show: ");
     }
 
     @OnClick(R.id.ex_performance_add_btn)
-    void addExercise(){
+    void addExercise() {
         mPresenter.setData(mModelOfExercisePerformance);
     }
 
@@ -64,13 +69,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .getType()
                 .getTag();
         Fragment fragment;
-        if (getSupportFragmentManager().findFragmentByTag(tag) != null) {
-            fragment = getSupportFragmentManager().findFragmentByTag(tag);
-        } else if (Objects.equals(tag, CARDIO.getTag())){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        if (fragmentManager.findFragmentByTag(tag) != null) {
+            fragment = fragmentManager.findFragmentByTag(tag);
+        } else if (Objects.equals(tag, CARDIO.getTag())) {
 //            fragment = ;
-        } else if (Objects.equals(tag, POWER.getTag())){
-//            fragment =;
+        } else if (Objects.equals(tag, POWER.getTag())) {
+            fragment = PowerExPerformFragment.newInstance(mModelOfExercisePerformance);
         }
+        fragmentManager.beginTransaction()
+                .add(R.id.fragment_container, fragment,
+                        tag)
+                .commit();
     }
 
     private void setToolbar() {
@@ -85,17 +96,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void createMyView() {
-        mCustomCollapsingView.setTextTitle("Пляски святого Вита. Гимнастика Хантингтона")
-                .setTextSubtitle("Невро-Кардио")
-                .setTextValue("120")
-                .setTextUnit("ккал")
-                .setTextExtraDescription("за 23 минуты")
-                .setImageID(R.drawable.ic_cardio_ex)
+        String subTitle = "";
+        String value = "";
+        String unit = "кг";
+        String description = "";
+        int kcalBurned = 0;
+        int resID = R.drawable.ic_cardio_ex;
+        if (mModelOfExercisePerformance.getExercise().getType() == POWER){
+            mCustomCollapsingView.showAlertView(true);
+            subTitle = "Силовые";
+        }else
+            if(mModelOfExercisePerformance.getExercise().getType() == CARDIO){
+                mCustomCollapsingView.showAlertView(false);
+                subTitle = "Кардио";
+
+                kcalBurned = (int) (mModelOfExercisePerformance.getCurrentKcalPerHour() * getFakeWeight() *
+                                        mModelOfExercisePerformance.getDuration());
+            }
+
+        mCustomCollapsingView.setTextTitle(mModelOfExercisePerformance.getExercise().getTitle())
+                .setTextSubtitle(subTitle)
+                .setTextValue(String.valueOf(kcalBurned))
+                .setTextUnit(unit)
+                .setTextExtraDescription(description)
+                .setImageID(resID)
                 .applyChanges();
     }
 
     private void showAlertView() {
-        mCustomCollapsingView.showAlertView(true).applyChanges();
+        mCustomCollapsingView
+                .showAlertView(true)
+                .applyChanges();
     }
 
     @Override
@@ -117,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return true;
         }
         if (id == R.id.edit) {
-            showAlertView();
+//            showAlertView();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -127,5 +158,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.detachView();
+    }
+    int getFakeWeight(){
+        return 80;
     }
 }

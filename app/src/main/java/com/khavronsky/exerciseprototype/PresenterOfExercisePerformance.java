@@ -28,7 +28,7 @@ public class PresenterOfExercisePerformance extends AbstractPresenter<PresenterO
                         .setWeight(50000)
                         .setTitle("Мадагаскарский жим")
                         .setCustomExercise(true))
-                .setDate(12000L)
+                .setStartTime(12000L)
                 .setDuration(5000L)
                 .setNote("Заметка о самочуствии во время осуществления мадагаскарского жима");
     }

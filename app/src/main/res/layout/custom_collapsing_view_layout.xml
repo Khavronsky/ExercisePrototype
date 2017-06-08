@@ -93,7 +93,7 @@
         android:id="@+id/inner_nested_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ced1d6"
+        android:background="@color/bg"
         android:scrollbars="none"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 

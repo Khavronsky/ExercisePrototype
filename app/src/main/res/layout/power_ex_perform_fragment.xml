@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Время начала"
-                android:inputType="text"
+                android:inputType="datetime"
                 android:maxLines="1"
                 android:textColor="@color/gray5"
                 android:textSize="16sp" />
@@ -48,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Продолжительность"
-                android:inputType="text"
+                android:inputType="time"
                 android:maxLines="1"
                 android:textColor="@color/gray5"
                 android:textSize="16sp" />
@@ -71,7 +71,7 @@
             android:cursorVisible="false"
             android:focusable="false"
             android:hint="Число подходов"
-            android:inputType="text"
+            android:inputType="number"
             android:textSize="16sp" />
     </android.support.design.widget.TextInputLayout>
 
@@ -91,7 +91,7 @@
             android:cursorVisible="false"
             android:focusable="false"
             android:hint="Повторений в подходе"
-            android:inputType="text"
+            android:inputType="number"
             android:textSize="16sp" />
     </android.support.design.widget.TextInputLayout>
 
@@ -115,7 +115,7 @@
             android:textSize="16sp" />
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/ex_cardio_perform_note_layout"
+        android:id="@+id/ex_power_perform_note_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -124,7 +124,7 @@
         app:errorTextAppearance="@style/HintTextStyle">
 
         <EditText
-            android:id="@+id/ex_cardio_perform_note"
+            android:id="@+id/ex_power_perform_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:cursorVisible="false"
