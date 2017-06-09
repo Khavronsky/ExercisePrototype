@@ -9,72 +9,92 @@ public class CardioExerciseModel extends ExerciseModel implements Parcelable {
 
     private final static ExerciseType type = ExerciseType.CARDIO;
 
-    @IntDef({
-            MET,
-            KCAL_PER_HOUR,
-    })
+    @IntDef(
+            flag = true,
+            value = {TYPE_NOT_SPECIFY, TYPE_SPECIFY})
+    public @interface IntensityType{}
 
-    @interface IntensityType {}
-    private static final int MET = 0;
-    private static final int KCAL_PER_HOUR = 1;
+    static final int TYPE_NOT_SPECIFY = 0;
+    public static final int TYPE_SPECIFY = 1;
+
+    @IntDef(
+            flag = true,
+            value = {METHOD_MET_VALUES, METHOD_CAL_PER_HOUR})
+    public @interface CountingCaloriesMethod{}
+
+    public static final int METHOD_MET_VALUES = 0;
+    public static final int METHOD_CAL_PER_HOUR = 1;
+
+    @CountingCaloriesMethod
+    private int mCountCalMethod;
 
     @IntensityType
-    private int intensityType;
+    private int mIntensityType;
 
-    private int high;
+    private float high;
 
-    private int middle;
+    private float middle;
 
-    private int low;
+    private float low;
 
-    private int defValue;
+    private float defValue;
+
+    @IntensityType
+    public int getIntensityType() {
+        return mIntensityType;
+    }
+
+    public CardioExerciseModel setIntensityType(@IntensityType final int intensityType) {
+        mIntensityType = intensityType;
+        return this;
+    }
 
     public CardioExerciseModel() {
         super.setType(type);
     }
 
-    @IntensityType
-    public int getIntensityType() {
-        return intensityType;
+    @CountingCaloriesMethod
+    public int getCountCalMethod() {
+        return mCountCalMethod;
     }
 
-    public CardioExerciseModel setIntensityType(@IntensityType final int intensityType) {
-        this.intensityType = intensityType;
+    public CardioExerciseModel setCountCalMethod(@CountingCaloriesMethod final int countCalMethod) {
+        this.mCountCalMethod = countCalMethod;
         return this;
     }
 
-    public int getHigh() {
+    public float getHigh() {
         return high;
     }
 
-    public CardioExerciseModel setHigh(final int high) {
+    public CardioExerciseModel setHigh(final float high) {
         this.high = high;
         return this;
     }
 
-    public int getMiddle() {
+    public float getMiddle() {
         return middle;
     }
 
-    public CardioExerciseModel setMiddle(final int middle) {
+    public CardioExerciseModel setMiddle(final float middle) {
         this.middle = middle;
         return this;
     }
 
-    public int getLow() {
+    public float getLow() {
         return low;
     }
 
-    public CardioExerciseModel setLow(final int low) {
+    public CardioExerciseModel setLow(final float low) {
         this.low = low;
         return this;
     }
 
-    public int getDefValue() {
+    public float getDefValue() {
         return defValue;
     }
 
-    public CardioExerciseModel setDefValue(final int defValue) {
+    public CardioExerciseModel setDefValue(final float defValue) {
         this.defValue = defValue;
         return this;
     }
@@ -112,9 +132,9 @@ public class CardioExerciseModel extends ExerciseModel implements Parcelable {
 
     @Override
     public void writeToParcel(final Parcel dest, final int flags) {
-        dest.writeInt(high);
-        dest.writeInt(middle);
-        dest.writeInt(low);
-        dest.writeInt(defValue);
+        dest.writeFloat(high);
+        dest.writeFloat(middle);
+        dest.writeFloat(low);
+        dest.writeFloat(defValue);
     }
 }

@@ -1,7 +1,9 @@
 package com.khavronsky.exerciseprototype;
 
 import com.khavronsky.exerciseprototype.custom_views.collapsing_card.CustomCollapsingView;
+import com.khavronsky.exerciseprototype.exercise_models.CardioExerciseModel;
 import com.khavronsky.exerciseprototype.exercise_models.ModelOfExercisePerformance;
+import com.khavronsky.exerciseprototype.fragments.CardioExPerformFragment;
 import com.khavronsky.exerciseprototype.fragments.PowerExPerformFragment;
 
 import android.os.Bundle;
@@ -71,11 +73,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Fragment fragment;
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        Log.d("KhS", "startFragment: ");
         if (fragmentManager.findFragmentByTag(tag) != null) {
             fragment = fragmentManager.findFragmentByTag(tag);
         } else if (Objects.equals(tag, CARDIO.getTag())) {
-//            fragment = ;
+            Log.d("KhS", "startFragment: CARDIO");
+            fragment = CardioExPerformFragment.newInstance(mModelOfExercisePerformance);
         } else if (Objects.equals(tag, POWER.getTag())) {
+            Log.d("KhS", "startFragment: POWER");
             fragment = PowerExPerformFragment.newInstance(mModelOfExercisePerformance);
         }
         fragmentManager.beginTransaction()
@@ -161,5 +166,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     int getFakeWeight(){
         return 80;
+    }
+
+    int burnedKcalories(float burnPerHourValue, int duration,
+            @CardioExerciseModel.CountingCaloriesMethod int countingMethod){
+        if (countingMethod == CardioExerciseModel.METHOD_CAL_PER_HOUR){
+//            return (int) (burnPerHourValue * duration * getFakeWeight() / 60);
+        } else {
+        }
+        return (int) (burnPerHourValue * duration * getFakeWeight() / 60);
+
     }
 }

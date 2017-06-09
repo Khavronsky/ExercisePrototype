@@ -1,6 +1,7 @@
 package com.khavronsky.exerciseprototype.fragments;
 
 import com.khavronsky.exerciseprototype.R;
+import com.khavronsky.exerciseprototype.exercise_models.ExerciseModel;
 import com.khavronsky.exerciseprototype.exercise_models.ModelOfExercisePerformance;
 
 import android.os.Bundle;
@@ -16,28 +17,14 @@ import android.widget.EditText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+import static com.khavronsky.exerciseprototype.fragments.FloatNumPickerFragment.EXTRA_DECIMAL_STEP_IS_01;
 
 public class PowerExPerformFragment extends Fragment {
+
+    public final static String FRAGMENT_TAG = ExerciseModel.ExerciseType.POWER.getTag();
 
     @BindView(R.id.ex_power_perform_start_time)
     EditText mStartTime;
@@ -89,15 +76,54 @@ public class PowerExPerformFragment extends Fragment {
         init(v);
         return v;
     }
+    @OnClick({R.id.ex_power_perform_sets, R.id.ex_power_perform_repeats, R.id.ex_power_perform_weight})
+    void showFloatPicker(View v){
+        showPicker((EditText) v);
+    }
 
     private void init(final View v) {
         initTextWatcher();
-        mStartTime.addTextChangedListener(mTextWatcher);
-        mDuration.addTextChangedListener(mTextWatcher);
-        mSets.addTextChangedListener(mTextWatcher);
-        mRepeats.addTextChangedListener(mTextWatcher);
-        mWeight.addTextChangedListener(mTextWatcher);
+//        mStartTime.addTextChangedListener(mTextWatcher);
+//        mDuration.addTextChangedListener(mTextWatcher);
+//        mSets.addTextChangedListener(mTextWatcher);
+//        mRepeats.addTextChangedListener(mTextWatcher);
+//        mWeight.addTextChangedListener(mTextWatcher);
         mNote.addTextChangedListener(mTextWatcher);
+    }
+    void showPicker(EditText editText) {
+        FloatNumPickerFragment dialog= (FloatNumPickerFragment) getFragmentManager()
+                .findFragmentByTag("picker");
+        if(dialog!=null){
+            return;
+        }
+        dialog = new FloatNumPickerFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("min_value", 0);
+        bundle.putInt("max_value", 2);
+        float curVal = 1;
+        if(editText.getText().length() != 0) curVal = Float.parseFloat(String.valueOf(editText.getText()));
+        bundle.putFloat("current_value", curVal);
+        bundle.putBoolean(EXTRA_DECIMAL_STEP_IS_01, true);
+//        bundle.putInt("one_point_value", 1);
+        dialog.setArguments(bundle);
+        dialog.setCallback(new IDialogFragment() {
+            @Override
+            public void doButtonClick1(final Object o) {
+                editText.setText(String.valueOf(o));
+            }
+
+            @Override
+            public void doButtonClick2() {
+            }
+
+            @Override
+            public void doByDismissed() {
+
+
+            }
+        });
+
+        dialog.show(getFragmentManager(), "picker");
     }
 
     private void initTextWatcher() {

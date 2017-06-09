@@ -1,6 +1,7 @@
 package com.khavronsky.exerciseprototype;
 
 
+import com.khavronsky.exerciseprototype.exercise_models.CardioExerciseModel;
 import com.khavronsky.exerciseprototype.exercise_models.ModelOfExercisePerformance;
 import com.khavronsky.exerciseprototype.exercise_models.PowerExerciseModel;
 
@@ -14,7 +15,7 @@ public class PresenterOfExercisePerformance extends AbstractPresenter<PresenterO
             if (modelOfExercisePerformance != null) {
                 model = modelOfExercisePerformance;
             } else {
-                model = createFakeData();
+                model = createFakeData2();
             }
             getView().show(model);
         }
@@ -26,7 +27,22 @@ public class PresenterOfExercisePerformance extends AbstractPresenter<PresenterO
                         .setRepeats(15)
                         .setSets(3)
                         .setWeight(50000)
-                        .setTitle("Мадагаскарский жим")
+                        .setTitle("Мадагаскарский жим с обратным подворачиванием стоп")
+                        .setCustomExercise(true))
+                .setStartTime(12000L)
+                .setDuration(5000L)
+                .setNote("Заметка о самочуствии во время осуществления мадагаскарского жима");
+    }
+    private ModelOfExercisePerformance createFakeData2() {
+        return new ModelOfExercisePerformance(
+                new CardioExerciseModel()
+                        .setCountCalMethod(CardioExerciseModel.METHOD_MET_VALUES)
+                        .setIntensityType(CardioExerciseModel.TYPE_SPECIFY)
+                        .setLow(1)
+                        .setMiddle(2)
+                        .setHigh(3)
+                        .setDefValue(5)
+                        .setTitle("Жим челюстями с фиксацией пищи обратным хватом")
                         .setCustomExercise(true))
                 .setStartTime(12000L)
                 .setDuration(5000L)
