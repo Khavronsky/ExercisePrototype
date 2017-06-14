@@ -15,7 +15,7 @@ public class PresenterOfExercisePerformance extends AbstractPresenter<PresenterO
             if (modelOfExercisePerformance != null) {
                 model = modelOfExercisePerformance;
             } else {
-                model = createFakeData2();
+                model = createFakeData();
             }
             getView().show(model);
         }
@@ -30,7 +30,7 @@ public class PresenterOfExercisePerformance extends AbstractPresenter<PresenterO
                         .setTitle("Мадагаскарский жим с обратным подворачиванием стоп")
                         .setCustomExercise(true))
                 .setStartTime(12000L)
-                .setDuration(5000L)
+                .setDuration(50)
                 .setNote("Заметка о самочуствии во время осуществления мадагаскарского жима");
     }
     private ModelOfExercisePerformance createFakeData2() {
@@ -45,7 +45,7 @@ public class PresenterOfExercisePerformance extends AbstractPresenter<PresenterO
                         .setTitle("Жим челюстями с фиксацией пищи обратным хватом")
                         .setCustomExercise(true))
                 .setStartTime(12000L)
-                .setDuration(5000L)
+                .setDuration(50)
                 .setNote("Заметка о самочуствии во время осуществления мадагаскарского жима");
     }
 

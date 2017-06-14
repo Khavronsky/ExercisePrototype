@@ -7,7 +7,7 @@ import android.os.Parcelable;
 public class ModelOfExercisePerformance implements Parcelable{
     private ExerciseModel mExercise;
     private Long mStartTime;
-    private Long mDuration;
+    private int mDuration;
     private String mNote;
     private int currentKcalPerHour;
 
@@ -36,11 +36,11 @@ public class ModelOfExercisePerformance implements Parcelable{
         return this;
     }
 
-    public Long getDuration() {
+    public int getDuration() {
         return mDuration;
     }
 
-    public ModelOfExercisePerformance setDuration(final Long duration) {
+    public ModelOfExercisePerformance setDuration(final int duration) {
         mDuration = duration;
         return this;
     }

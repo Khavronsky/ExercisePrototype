@@ -20,9 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-import static com.khavronsky.exerciseprototype.fragments.FloatNumPickerFragment.EXTRA_DECIMAL_STEP_IS_01;
-
-public class PowerExPerformFragment extends Fragment {
+public class PowerExPerformFragment extends Fragment implements IDialogFragment {
 
     public final static String FRAGMENT_TAG = ExerciseModel.ExerciseType.POWER.getTag();
 
@@ -76,36 +74,55 @@ public class PowerExPerformFragment extends Fragment {
         init(v);
         return v;
     }
-    @OnClick({R.id.ex_power_perform_sets, R.id.ex_power_perform_repeats, R.id.ex_power_perform_weight})
-    void showFloatPicker(View v){
-        showPicker((EditText) v);
+
+    @Override
+    public void doButtonClick1(final Object o) {
+
+    }
+
+    @Override
+    public void doButtonClick2() {
+
+    }
+
+    @Override
+    public void doByDismissed() {
+
+    }
+
+    @OnClick({R.id.ex_power_perform_start_time, R.id.ex_power_perform_duration, R.id.ex_power_perform_sets, R.id
+            .ex_power_perform_repeats, R.id.ex_power_perform_weight})
+    void showPicker(EditText v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.ex_power_perform_start_time:
+                break;
+            case R.id.ex_power_perform_duration:
+                break;
+            case R.id.ex_power_perform_sets:
+                showIntPicker(v, 1, 1);
+                break;
+            case R.id.ex_power_perform_repeats:
+                showIntPicker(v, 10, 1);
+                break;
+            case R.id.ex_power_perform_weight:
+                showIntPicker(v, 0, 1);
+                break;
+        }
     }
 
     private void init(final View v) {
         initTextWatcher();
-//        mStartTime.addTextChangedListener(mTextWatcher);
-//        mDuration.addTextChangedListener(mTextWatcher);
-//        mSets.addTextChangedListener(mTextWatcher);
-//        mRepeats.addTextChangedListener(mTextWatcher);
-//        mWeight.addTextChangedListener(mTextWatcher);
         mNote.addTextChangedListener(mTextWatcher);
     }
-    void showPicker(EditText editText) {
-        FloatNumPickerFragment dialog= (FloatNumPickerFragment) getFragmentManager()
+
+    void showIntPicker(EditText editText, int currentVal, int onePointVal) {
+        IntNumPickerFragment dialog = (IntNumPickerFragment) getFragmentManager()
                 .findFragmentByTag("picker");
-        if(dialog!=null){
+        if (dialog != null) {
             return;
         }
-        dialog = new FloatNumPickerFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt("min_value", 0);
-        bundle.putInt("max_value", 2);
-        float curVal = 1;
-        if(editText.getText().length() != 0) curVal = Float.parseFloat(String.valueOf(editText.getText()));
-        bundle.putFloat("current_value", curVal);
-        bundle.putBoolean(EXTRA_DECIMAL_STEP_IS_01, true);
-//        bundle.putInt("one_point_value", 1);
-        dialog.setArguments(bundle);
+        dialog = IntNumPickerFragment.newInstance(0, 1000, currentVal, onePointVal);
         dialog.setCallback(new IDialogFragment() {
             @Override
             public void doButtonClick1(final Object o) {
@@ -118,7 +135,6 @@ public class PowerExPerformFragment extends Fragment {
 
             @Override
             public void doByDismissed() {
-
 
             }
         });
@@ -142,10 +158,11 @@ public class PowerExPerformFragment extends Fragment {
             @Override
             public void afterTextChanged(final Editable s) {
                 try {
-                    if(Integer.parseInt(String.valueOf(s)) == 0){
+                    if (Integer.parseInt(String.valueOf(s)) == 0) {
                         s.clear();
                     }
-                } catch (NumberFormatException e) {}
+                } catch (NumberFormatException e) {
+                }
             }
         };
     }

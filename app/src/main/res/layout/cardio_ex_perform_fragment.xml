@@ -18,6 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:focusable="false"
+            app:errorEnabled="false"
             app:errorTextAppearance="@style/HintTextStyle">
 
             <EditText
@@ -25,6 +27,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Время начала"
+                android:cursorVisible="false"
+                android:focusable="false"
                 android:inputType="text"
                 android:maxLines="1"
                 android:textColor="@color/gray5"
@@ -41,6 +45,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:focusable="false"
+            app:errorEnabled="false"
             app:errorTextAppearance="@style/HintTextStyle">
 
             <EditText
@@ -48,6 +54,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Продолжительность"
+                android:cursorVisible="false"
+                android:focusable="false"
                 android:inputType="text"
                 android:maxLines="1"
                 android:textColor="@color/gray5"
@@ -104,7 +112,7 @@
             android:layout_height="wrap_content"
 
             android:hint="Заметка"
-            android:inputType="text"
+
             android:textSize="16sp" />
     </android.support.design.widget.TextInputLayout>
 
