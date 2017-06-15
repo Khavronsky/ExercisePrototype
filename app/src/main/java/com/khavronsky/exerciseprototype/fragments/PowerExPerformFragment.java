@@ -3,26 +3,39 @@ package com.khavronsky.exerciseprototype.fragments;
 import com.khavronsky.exerciseprototype.R;
 import com.khavronsky.exerciseprototype.exercise_models.ExerciseModel;
 import com.khavronsky.exerciseprototype.exercise_models.ModelOfExercisePerformance;
+import com.khavronsky.exerciseprototype.exercise_models.PowerExerciseModel;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class PowerExPerformFragment extends Fragment implements IDialogFragment {
+public class PowerExPerformFragment extends Fragment implements IDialogFragment, TextWatcher {
 
+    //region fields
     public final static String FRAGMENT_TAG = ExerciseModel.ExerciseType.POWER.getTag();
+
+    private final static String DURATION = "duration";
+
+    private final static String SETS = "sets";
+
+    private final static String REPEATS = "repeats";
+
+    private final static String WEIGHT = "weight";
 
     @BindView(R.id.ex_power_perform_start_time)
     EditText mStartTime;
@@ -42,25 +55,26 @@ public class PowerExPerformFragment extends Fragment implements IDialogFragment 
     @BindView(R.id.ex_power_perform_note)
     EditText mNote;
 
-    TextWatcher mTextWatcher;
+    private Calendar date = Calendar.getInstance();
+
+    private IntNumPickerFragment mIntNumPickerDialog;
+
+    private TimePickerDialogFragment mTimePickerDialog;
 
     private Unbinder unbinder;
 
-    ModelOfExercisePerformance mModelOfExercisePerformance;
+    private String pickerOnScreen = "";
 
+    private ModelOfExercisePerformance mModelOfExercisePerformance;
+    //endregion
+
+    //region creation&initialization
     public static PowerExPerformFragment newInstance(ModelOfExercisePerformance modelOfExercisePerformance) {
-
         Bundle args = new Bundle();
         args.putParcelable("model", modelOfExercisePerformance);
         PowerExPerformFragment fragment = new PowerExPerformFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d("KhSY_NewWaterMainFrg", "onCreate: ");
     }
 
     @Nullable
@@ -75,20 +89,75 @@ public class PowerExPerformFragment extends Fragment implements IDialogFragment 
         return v;
     }
 
+    private void init(final View v) {
+        setDate();
+        mDuration.setText(String.valueOf(
+                mModelOfExercisePerformance
+                        .getDuration()));
+        mSets.setText(String.valueOf(
+                ((PowerExerciseModel) mModelOfExercisePerformance
+                        .getExercise())
+                        .getSets()));
+        mRepeats.setText(String.valueOf(
+                ((PowerExerciseModel) mModelOfExercisePerformance
+                        .getExercise())
+                        .getRepeats()));
+        mWeight.setText(String.valueOf(
+                ((PowerExerciseModel) mModelOfExercisePerformance
+                        .getExercise())
+                        .getWeight()));
+        mNote.setText(mModelOfExercisePerformance.getNote());
+        mNote.addTextChangedListener(this);
+    }
+    //endregion
+
+    //region IDialogFragment implementation
     @Override
     public void doButtonClick1(final Object o) {
-
+        if (mTimePickerDialog != null) {
+            date = (Calendar) o;
+            mTimePickerDialog.dismiss();
+            mTimePickerDialog = null;
+            mModelOfExercisePerformance.setStartTime(date.getTimeInMillis());
+            setDate();
+        }
+        if (mIntNumPickerDialog != null) {
+            mIntNumPickerDialog.dismiss();
+            switch (pickerOnScreen) {
+                case DURATION:
+                    mModelOfExercisePerformance.setDuration((int) o);
+                    mDuration.setText(o + " мин");
+                    break;
+                case SETS:
+                    ((PowerExerciseModel) mModelOfExercisePerformance.getExercise()).setSets((int) o);
+                    mSets.setText(String.valueOf(o));
+                    break;
+                case REPEATS:
+                    ((PowerExerciseModel) mModelOfExercisePerformance.getExercise()).setRepeats((int) o);
+                    mRepeats.setText(String.valueOf(o));
+                    break;
+                case WEIGHT:
+                    ((PowerExerciseModel) mModelOfExercisePerformance.getExercise()).setWeight((int) o);
+                    mWeight.setText(String.valueOf(o));
+                    break;
+            }
+            mIntNumPickerDialog = null;
+        }
+        pickerOnScreen = null;
     }
 
     @Override
     public void doButtonClick2() {
-
+        mTimePickerDialog = null;
+        mIntNumPickerDialog = null;
     }
 
     @Override
     public void doByDismissed() {
-
+        mIntNumPickerDialog = null;
+        mTimePickerDialog = null;
     }
+    //endregion
 
     @OnClick({R.id.ex_power_perform_start_time, R.id.ex_power_perform_duration, R.id.ex_power_perform_sets, R.id
             .ex_power_perform_repeats, R.id.ex_power_perform_weight})
@@ -96,76 +165,65 @@ public class PowerExPerformFragment extends Fragment implements IDialogFragment 
         int id = v.getId();
         switch (id) {
             case R.id.ex_power_perform_start_time:
+                if (mTimePickerDialog == null) {
+                    mTimePickerDialog = TimePickerDialogFragment
+                            .newInstance(date.get(Calendar.HOUR_OF_DAY), date.get(Calendar.MINUTE));
+                    mTimePickerDialog.setCallback(this);
+                    mTimePickerDialog.show(getActivity().getSupportFragmentManager(), "time_picker_dialog");
+                }
                 break;
             case R.id.ex_power_perform_duration:
+                pickerOnScreen = DURATION;
+                showIntPicker(0, 1440, mModelOfExercisePerformance.getDuration(), 1);
                 break;
             case R.id.ex_power_perform_sets:
-                showIntPicker(v, 1, 1);
+                pickerOnScreen = SETS;
+                showIntPicker(1, 20, ((PowerExerciseModel) (mModelOfExercisePerformance.getExercise())).getSets(),
+                        1);
                 break;
             case R.id.ex_power_perform_repeats:
-                showIntPicker(v, 10, 1);
+                pickerOnScreen = REPEATS;
+                showIntPicker(1, 50,
+                        ((PowerExerciseModel) (mModelOfExercisePerformance.getExercise())).getRepeats(), 1);
                 break;
             case R.id.ex_power_perform_weight:
-                showIntPicker(v, 0, 1);
+                //поменять на floatPicker??????
+                pickerOnScreen = WEIGHT;
+                showIntPicker(1, 500,
+                        ((PowerExerciseModel) (mModelOfExercisePerformance.getExercise())).getWeight(), 1);
                 break;
         }
     }
 
-    private void init(final View v) {
-        initTextWatcher();
-        mNote.addTextChangedListener(mTextWatcher);
-    }
-
-    void showIntPicker(EditText editText, int currentVal, int onePointVal) {
-        IntNumPickerFragment dialog = (IntNumPickerFragment) getFragmentManager()
-                .findFragmentByTag("picker");
-        if (dialog != null) {
-            return;
+    void showIntPicker(int min, int max, int currentVal, int onePointVal) {
+        if (mIntNumPickerDialog == null) {
+            mIntNumPickerDialog = IntNumPickerFragment.newInstance(min, max, currentVal, onePointVal);
+            mIntNumPickerDialog.setCallback(this);
+            mIntNumPickerDialog.show(getFragmentManager(), "picker");
         }
-        dialog = IntNumPickerFragment.newInstance(0, 1000, currentVal, onePointVal);
-        dialog.setCallback(new IDialogFragment() {
-            @Override
-            public void doButtonClick1(final Object o) {
-                editText.setText(String.valueOf(o));
-            }
-
-            @Override
-            public void doButtonClick2() {
-            }
-
-            @Override
-            public void doByDismissed() {
-
-            }
-        });
-
-        dialog.show(getFragmentManager(), "picker");
     }
 
-    private void initTextWatcher() {
-        mTextWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(final CharSequence s, final int start, final int count,
-                    final int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(final Editable s) {
-                try {
-                    if (Integer.parseInt(String.valueOf(s)) == 0) {
-                        s.clear();
-                    }
-                } catch (NumberFormatException e) {
-                }
-            }
-        };
+    private void setDate() {
+        String dateText = DateUtils.formatDateTime(getActivity().getApplicationContext(),
+                mModelOfExercisePerformance.getStartTime(), DateUtils.FORMAT_SHOW_TIME);
+        mStartTime.setText(dateText);
     }
+
+    //region TextWatcher implementation
+    @Override
+    public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+        mModelOfExercisePerformance.setNote(String.valueOf(s));
+    }
+
+    @Override
+    public void afterTextChanged(final Editable s) {
+    }
+    //endregion
 
     @Override
     public void onDestroyView() {

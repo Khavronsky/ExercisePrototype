@@ -18,6 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:focusable="false"
+            app:errorEnabled="false"
             app:errorTextAppearance="@style/HintTextStyle">
 
             <EditText
@@ -25,7 +27,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Время начала"
-                android:inputType="datetime"
+                android:cursorVisible="false"
+                android:focusable="false"
                 android:maxLines="1"
                 android:textColor="@color/gray5"
                 android:textSize="16sp" />
@@ -41,6 +44,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:focusable="false"
+            app:errorEnabled="false"
             app:errorTextAppearance="@style/HintTextStyle">
 
             <EditText
@@ -48,7 +53,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Продолжительность"
-                android:inputType="time"
+                android:cursorVisible="false"
+                android:focusable="false"
                 android:maxLines="1"
                 android:textColor="@color/gray5"
                 android:textSize="16sp" />
@@ -71,7 +77,6 @@
             android:cursorVisible="false"
             android:focusable="false"
             android:hint="Число подходов"
-            android:inputType="number"
             android:textSize="16sp" />
     </android.support.design.widget.TextInputLayout>
 
@@ -91,7 +96,6 @@
             android:cursorVisible="false"
             android:focusable="false"
             android:hint="Повторений в подходе"
-            android:inputType="number"
             android:textSize="16sp" />
     </android.support.design.widget.TextInputLayout>
 
@@ -111,7 +115,6 @@
             android:cursorVisible="false"
             android:focusable="false"
             android:hint="Вес за подход (кг)"
-            android:inputType="number"
             android:textSize="16sp" />
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
@@ -128,7 +131,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Заметка"
-            android:inputType="text"
             android:textSize="16sp" />
     </android.support.design.widget.TextInputLayout>
 

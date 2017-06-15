@@ -26,7 +26,7 @@ public class PresenterOfExercisePerformance extends AbstractPresenter<PresenterO
                 new PowerExerciseModel()
                         .setRepeats(15)
                         .setSets(3)
-                        .setWeight(50000)
+                        .setWeight(500)
                         .setTitle("Мадагаскарский жим с обратным подворачиванием стоп")
                         .setCustomExercise(true))
                 .setStartTime(12000L)

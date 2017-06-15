@@ -45,13 +45,13 @@ public class CardioExPerformFragment extends Fragment implements IDialogFragment
 
     Calendar date = Calendar.getInstance();
 
-    TimePickerDialogFragment dialog;
+    private IntNumPickerFragment mIntNumPickerDialog;
+
+    private TimePickerDialogFragment mTimePickerDialog;
 
     private Unbinder unbinder;
 
     ModelOfExercisePerformance mModelOfExercisePerformance;
-
-    private IntNumPickerFragment dialogNumPicker;
 
     public static CardioExPerformFragment newInstance(ModelOfExercisePerformance modelOfExercisePerformance) {
 
@@ -78,54 +78,49 @@ public class CardioExPerformFragment extends Fragment implements IDialogFragment
         return v;
     }
 
-    @Override
-    public void doButtonClick1(final Object o) {
-        if (dialog != null) {
-            date = (Calendar) o;
-            dialog.dismiss();
-            dialog = null;
-            setDate();
-        }
-        if (dialogNumPicker != null) {
-            mModelOfExercisePerformance.setDuration((Integer) o);
-            dialogNumPicker.dismiss();
-            dialogNumPicker = null;
-            mExCardioPerformDuration.setText(String.valueOf(o) + " мин");
-//            curWeightView.setText((String) o);
-        }
-    }
-
-    @Override
-    public void doButtonClick2() {
-
-    }
-
-    @Override
-    public void doByDismissed() {
-
-    }
-
     @OnClick({R.id.ex_cardio_perform_start_time, R.id.ex_cardio_perform_duration})
     void showPickers(EditText eText) {
         int id = eText.getId();
         switch (id){
             case R.id.ex_cardio_perform_start_time:
-                if (dialog == null) {
-                    dialog = TimePickerDialogFragment.newInstance(date.get(Calendar.HOUR_OF_DAY), date.get(Calendar.MINUTE));
-                    dialog.setCallback(this);
-                    dialog.show(getActivity().getSupportFragmentManager(), "dialog");
+                if (mTimePickerDialog == null) {
+                    mTimePickerDialog = TimePickerDialogFragment.newInstance(date.get(Calendar.HOUR_OF_DAY), date.get(Calendar.MINUTE));
+                    mTimePickerDialog.setCallback(this);
+                    mTimePickerDialog.show(getActivity().getSupportFragmentManager(), "time_picker_dialog");
                 }
                 break;
             case R.id.ex_cardio_perform_duration:
-                if (dialogNumPicker == null) {
-                    dialogNumPicker = IntNumPickerFragment.newInstance(0, 1440, mModelOfExercisePerformance.getDuration(),
+                if (mIntNumPickerDialog == null) {
+                    mIntNumPickerDialog = IntNumPickerFragment.newInstance(0, 1440, mModelOfExercisePerformance.getDuration(),
                             1);
-                    dialogNumPicker.setCallback(this);
-                    dialogNumPicker.show(getActivity().getSupportFragmentManager(), "int_picker_dialog");
+                    mIntNumPickerDialog.setCallback(this);
+                    mIntNumPickerDialog.show(getActivity().getSupportFragmentManager(), "int_picker_dialog");
                 }
                 break;
         }
     }
+
+    @Override
+    public void doButtonClick1(final Object o) {
+        if (mTimePickerDialog != null) {
+            date = (Calendar) o;
+            mTimePickerDialog.dismiss();
+            mTimePickerDialog = null;
+            setDate();
+        }
+        if (mIntNumPickerDialog != null) {
+            mModelOfExercisePerformance.setDuration((int) o);
+            mIntNumPickerDialog.dismiss();
+            mIntNumPickerDialog = null;
+            mExCardioPerformDuration.setText(o + " мин");
+        }
+    }
+
+    @Override
+    public void doButtonClick2() {}
+
+    @Override
+    public void doByDismissed() {}
 
     private void setDate() {
         String dateText = DateUtils.formatDateTime(getActivity().getApplicationContext(),

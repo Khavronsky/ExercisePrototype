@@ -110,9 +110,7 @@
             android:id="@+id/ex_cardio_perform_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:hint="Заметка"
-
             android:textSize="16sp" />
     </android.support.design.widget.TextInputLayout>
 
