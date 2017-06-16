@@ -14,7 +14,7 @@ public class CardioExerciseModel extends ExerciseModel implements Parcelable {
             value = {TYPE_NOT_SPECIFY, TYPE_SPECIFY})
     public @interface IntensityType{}
 
-    static final int TYPE_NOT_SPECIFY = 0;
+    public static final int TYPE_NOT_SPECIFY = 0;
     public static final int TYPE_SPECIFY = 1;
 
     @IntDef(

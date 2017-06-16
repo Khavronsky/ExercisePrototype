@@ -9,13 +9,13 @@ public class ModelOfExercisePerformance implements Parcelable{
     private Long mStartTime;
     private int mDuration;
     private String mNote;
-    private int currentKcalPerHour;
+    private float currentKcalPerHour;
 
-    public int getCurrentKcalPerHour() {
+    public float getCurrentKcalPerHour() {
         return currentKcalPerHour;
     }
 
-    public void setCurrentKcalPerHour(final int currentKcalPerHour) {
+    public void setCurrentKcalPerHour(final float currentKcalPerHour) {
         this.currentKcalPerHour = currentKcalPerHour;
     }
 

@@ -89,25 +89,10 @@ public class PowerExPerformFragment extends Fragment implements IDialogFragment,
         return v;
     }
 
-    private void init(final View v) {
-        setDate();
-        mDuration.setText(String.valueOf(
-                mModelOfExercisePerformance
-                        .getDuration()));
-        mSets.setText(String.valueOf(
-                ((PowerExerciseModel) mModelOfExercisePerformance
-                        .getExercise())
-                        .getSets()));
-        mRepeats.setText(String.valueOf(
-                ((PowerExerciseModel) mModelOfExercisePerformance
-                        .getExercise())
-                        .getRepeats()));
-        mWeight.setText(String.valueOf(
-                ((PowerExerciseModel) mModelOfExercisePerformance
-                        .getExercise())
-                        .getWeight()));
-        mNote.setText(mModelOfExercisePerformance.getNote());
-        mNote.addTextChangedListener(this);
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
     //endregion
 
@@ -159,6 +144,48 @@ public class PowerExPerformFragment extends Fragment implements IDialogFragment,
     }
     //endregion
 
+    //region TextWatcher implementation
+    @Override
+    public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+        mModelOfExercisePerformance.setNote(String.valueOf(s));
+    }
+
+    @Override
+    public void afterTextChanged(final Editable s) {
+    }
+
+    private void init(final View v) {
+        setDate();
+        mDuration.setText(String.valueOf(
+                mModelOfExercisePerformance
+                        .getDuration()));
+        mSets.setText(String.valueOf(
+                ((PowerExerciseModel) mModelOfExercisePerformance
+                        .getExercise())
+                        .getSets()));
+        mRepeats.setText(String.valueOf(
+                ((PowerExerciseModel) mModelOfExercisePerformance
+                        .getExercise())
+                        .getRepeats()));
+        mWeight.setText(String.valueOf(
+                ((PowerExerciseModel) mModelOfExercisePerformance
+                        .getExercise())
+                        .getWeight()));
+        mNote.setText(mModelOfExercisePerformance.getNote());
+        mNote.addTextChangedListener(this);
+    }
+
+    private void setDate() {
+        String dateText = DateUtils.formatDateTime(getActivity().getApplicationContext(),
+                mModelOfExercisePerformance.getStartTime(), DateUtils.FORMAT_SHOW_TIME);
+        mStartTime.setText(dateText);
+    }
+
     @OnClick({R.id.ex_power_perform_start_time, R.id.ex_power_perform_duration, R.id.ex_power_perform_sets, R.id
             .ex_power_perform_repeats, R.id.ex_power_perform_weight})
     void showPicker(EditText v) {
@@ -194,6 +221,7 @@ public class PowerExPerformFragment extends Fragment implements IDialogFragment,
                 break;
         }
     }
+    //endregion
 
     void showIntPicker(int min, int max, int currentVal, int onePointVal) {
         if (mIntNumPickerDialog == null) {
@@ -201,33 +229,5 @@ public class PowerExPerformFragment extends Fragment implements IDialogFragment,
             mIntNumPickerDialog.setCallback(this);
             mIntNumPickerDialog.show(getFragmentManager(), "picker");
         }
-    }
-
-    private void setDate() {
-        String dateText = DateUtils.formatDateTime(getActivity().getApplicationContext(),
-                mModelOfExercisePerformance.getStartTime(), DateUtils.FORMAT_SHOW_TIME);
-        mStartTime.setText(dateText);
-    }
-
-    //region TextWatcher implementation
-    @Override
-    public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-        mModelOfExercisePerformance.setNote(String.valueOf(s));
-    }
-
-    @Override
-    public void afterTextChanged(final Editable s) {
-    }
-    //endregion
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 }

@@ -15,7 +15,7 @@ public class PresenterOfExercisePerformance extends AbstractPresenter<PresenterO
             if (modelOfExercisePerformance != null) {
                 model = modelOfExercisePerformance;
             } else {
-                model = createFakeData();
+                model = createFakeData3();
             }
             getView().show(model);
         }
@@ -40,12 +40,24 @@ public class PresenterOfExercisePerformance extends AbstractPresenter<PresenterO
                         .setIntensityType(CardioExerciseModel.TYPE_SPECIFY)
                         .setLow(1)
                         .setMiddle(2)
-                        .setHigh(3)
-                        .setDefValue(5)
+                        .setHigh(6)
                         .setTitle("Жим челюстями с фиксацией пищи обратным хватом")
                         .setCustomExercise(true))
                 .setStartTime(12000L)
-                .setDuration(50)
+                .setDuration(70)
+                .setNote("Заметка о самочуствии во время осуществления мадагаскарского жима");
+    }
+
+    private ModelOfExercisePerformance createFakeData3() {
+        return new ModelOfExercisePerformance(
+                new CardioExerciseModel()
+                        .setCountCalMethod(CardioExerciseModel.METHOD_MET_VALUES)
+                        .setIntensityType(CardioExerciseModel.TYPE_NOT_SPECIFY)
+                        .setDefValue(8)
+                        .setTitle("Жим челюстями с фиксацией пищи обратным хватом")
+                        .setCustomExercise(true))
+                .setStartTime(12000L)
+                .setDuration(70)
                 .setNote("Заметка о самочуствии во время осуществления мадагаскарского жима");
     }
 
